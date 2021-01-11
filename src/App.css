@@ -1,0 +1,28 @@
+.App {
+  text-align: center;
+}
+
+.editor {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+}
+
+.editor input {
+  width: 200px;
+}
+
+.editor textarea {
+  width: 500px;
+  height: 350px;
+}
+
+a {
+  cursor: pointer;
+}
