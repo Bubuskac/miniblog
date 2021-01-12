@@ -23,6 +23,9 @@
   height: 350px;
 }
 
-a {
+.item {
   cursor: pointer;
+  background-color: white;
+  border: none;
+  margin: 5px;
 }

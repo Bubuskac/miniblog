@@ -98,20 +98,20 @@ export default class App extends PureComponent {
                     <h1>Blog</h1>
                     <div className="list">
                         {this.state.list.map((item) => {
-                            return (<a key={item.id} onClick={() => {this.showItem(item)}}>
+                            return (<button className="item" key={item.id} onClick={() => {this.showItem(item)}}>
                                 {item.title}
-                            </a>);
+                            </button>);
                         })}
                     </div>
                     <button onClick={() => {this.newItem()}}>Create New</button>
                 </div>}
                 {this.state.current != null && this.state.edit &&
                     <div className="editor">
-                        <label for="title">Title:</label>
+                        <label htmlFor="title">Title:</label>
                         <input type="text" name="title" value={this.state.title}
                             onChange={(e) => {this.setState({title: e.currentTarget.value})}}>
                         </input>
-                        <label for="body">Body:</label>
+                        <label htmlFor="body">Body:</label>
                         <textarea type="text" name="body" value={this.state.body}
                             onChange={(e) => {this.setState({body: e.currentTarget.value})}}>
                         </textarea>
