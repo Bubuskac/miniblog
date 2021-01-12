@@ -26,6 +26,8 @@ export default class App extends PureComponent {
         });
         let json = await response.json();
         this.setState({
+            current: null,
+            edit: false,
             list: json.list
         });
     }
@@ -71,19 +73,7 @@ export default class App extends PureComponent {
                 body: JSON.stringify(current)
             });
         }
-        let response = await fetch(`http://${config.host}:${config.port}/list`, {
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
-        });
-        let json = await response.json();
-        this.setState({
-            current: null,
-            edit: false,
-            list: json.list
-        });
+        this.getList();
     }
 
     async deleteCurrent() {
@@ -95,27 +85,15 @@ export default class App extends PureComponent {
                 'Content-Type': 'application/json'
             }
         });
-        let response = await fetch(`http://${config.host}:${config.port}/list`, {
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
-        });
-        let json = await response.json();
-        this.setState({
-            current: null,
-            edit: false,
-            list: json.list
-        });
+        this.getList();
     }
   
     render() {
         return (
             <div className="App">
-                {this.state.current == null && <div className="list">
+                {this.state.current == null && <div>
                     <h1>Blog</h1>
-                    <div class="list">
+                    <div className="list">
                         {this.state.list.map((item) => {
                             return (<a key={item.id} onClick={() => {this.showItem(item)}}>
                                 {item.title}
@@ -125,7 +103,7 @@ export default class App extends PureComponent {
                     <button onClick={() => {this.newItem()}}>Create New</button>
                 </div>}
                 {this.state.current != null && this.state.edit &&
-                    <div class="editor">
+                    <div className="editor">
                         <label for="title">Title:</label>
                         <input type="text" name="title" value={this.state.title}
                             onChange={(e) => {this.setState({title: e.currentTarget.value})}}>
