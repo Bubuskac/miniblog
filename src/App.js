@@ -52,14 +52,25 @@ export default class App extends PureComponent {
         let current = this.state.current;
         current.title = this.state.title;
         current.body = this.state.body;
-        await fetch(`http://${config.host}:${config.port}/item`, {
-            method: 'PUT',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(current)
-        });
+        if (current.id < 0) {
+            await fetch(`http://${config.host}:${config.port}/item`, {
+                method: 'PUT',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(current)
+            });
+        } else {
+            await fetch(`http://${config.host}:${config.port}/item?id=${current.id}`, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(current)
+            });
+        }
         let response = await fetch(`http://${config.host}:${config.port}/list`, {
             method: 'GET',
             headers: {
@@ -75,19 +86,28 @@ export default class App extends PureComponent {
         });
     }
 
-    deleteCurrent() {
+    async deleteCurrent() {
         let current = this.state.current;
-        let newlist = [];
-        for (let i = 0; i < this.state.list.length; i++) {
-            if (i != current.id) {
-                this.state.list[i].id = i;
-                newlist.push(this.state.list[i]);
+        await fetch(`http://${config.host}:${config.port}/item?id=${current.id}`, {
+            method: 'DELETE',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
             }
-        }
+        });
+        let response = await fetch(`http://${config.host}:${config.port}/list`, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        });
+        let json = await response.json();
         this.setState({
             current: null,
-            list: newlist
-        })
+            edit: false,
+            list: json.list
+        });
     }
   
     render() {

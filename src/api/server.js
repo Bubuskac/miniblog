@@ -25,7 +25,7 @@ app.get('/list', (req, res) => {
 app.options('/item', (req, res) => {
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
     res.setHeader('Access-Control-Allow-Headers', 'Origin, Content-Type, Accept');
-    res.setHeader('Access-Control-Allow-Methods', 'PUT');
+    res.setHeader('Access-Control-Allow-Methods', 'PUT,POST,DELETE');
     res.end();
 });
 
@@ -33,9 +33,22 @@ app.put('/item', (req, res) => {
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
     res.setHeader('Access-Control-Allow-Headers', 'Origin, Content-Type, Accept');
     res.setHeader('Access-Control-Allow-Methods', 'PUT');
-    console.log(req.body);
     res.json(responder.add(req.body));
-})
+});
+
+app.post('/item', (req, res) => {
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+    res.setHeader('Access-Control-Allow-Headers', 'Origin, Content-Type, Accept');
+    res.setHeader('Access-Control-Allow-Methods', 'POST');
+    res.json(responder.update(req.body));
+});
+
+app.delete('/item', (req, res) => {
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+    res.setHeader('Access-Control-Allow-Headers', 'Origin, Content-Type, Accept');
+    res.setHeader('Access-Control-Allow-Methods', 'DELETE');
+    res.json(responder.delete(req.query));
+});
 
 app.listen(port, hostname, () => {
     console.log(`Server running at http://${hostname}:${port}/`);

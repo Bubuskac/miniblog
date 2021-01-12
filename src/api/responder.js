@@ -13,20 +13,24 @@ class responder {
         return result;
     }
 
-    delete(data) {
-        const {token: token, deleteElement: item} = data;
-        const user = dataManager.getUser(token);
+    update(data) {
         let result = { success: true };
-        if (user) {
-            try {
-                dataManager.removeItem(user.userId, item);
-            } catch (e) {
-                result.success = false;
-                result.message = 'Error';
-            }
-        } else {
+        try {
+            dataManager.updateItem(data);
+        } catch (e) {
             result.success = false;
-            result.message = 'Invalid Token';
+            result.message = 'Error';
+        }
+        return result;
+    }
+
+    delete(data) {
+        let result = { success: true };
+        try {
+            dataManager.removeItem(data.id);
+        } catch (e) {
+            result.success = false;
+            result.message = 'Error';
         }
         return result;
     }
