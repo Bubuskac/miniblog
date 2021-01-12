@@ -13,6 +13,9 @@ export default class App extends PureComponent {
           title: '',
           body: ''
         };
+    }
+
+    componentDidMount() {
         this.getList();
     }
 
