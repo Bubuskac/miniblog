@@ -82,50 +82,64 @@ export default class App extends PureComponent {
         });
         this.getList();
     }
+
+    listView() {
+        return (
+            <div>
+                <h1>Blog</h1>
+                <div className="list">
+                    {this.state.list.map((item) => {
+                        return (<button className="item" key={item.id} onClick={() => {this.showItem(item)}}>
+                            {item.title}
+                        </button>);
+                    })}
+                </div>
+                <button onClick={() => {this.newItem()}}>Create New</button>
+            </div>
+        );
+    }
+
+    editor() {
+        return (
+            <div className="editor">
+                <label htmlFor="title">Title:</label>
+                <input type="text" name="title" value={this.state.title}
+                    onChange={(e) => {this.setState({title: e.currentTarget.value})}}>
+                </input>
+                <label htmlFor="body">Body:</label>
+                <textarea type="text" name="body" value={this.state.body}
+                    onChange={(e) => {this.setState({body: e.currentTarget.value})}}>
+                </textarea>
+                <div>
+                    <button onClick={() => {this.saveItem()}}>Save</button>
+                    <button onClick={() => {this.setState({edit: false, current: null})}}>Cancel</button>
+                </div>
+            </div>
+        );
+    }
+
+    viewer() {
+        return (
+            <div>
+                <h1>{this.state.current.title}</h1>
+                <div>{this.state.current.body}</div>
+                <button onClick={() => {this.setState({
+                    edit: true,
+                    title: this.state.current.title,
+                    body: this.state.current.body
+                })}}>Edit</button>
+                <button onClick={() => {this.setState({current: null})}}>Back</button>
+                <button onClick={() => {this.deleteCurrent()}}>Delete</button>
+            </div>
+        );
+    }
   
     render() {
         return (
             <div className="App">
-                {this.state.current == null && <div>
-                    <h1>Blog</h1>
-                    <div className="list">
-                        {this.state.list.map((item) => {
-                            return (<button className="item" key={item.id} onClick={() => {this.showItem(item)}}>
-                                {item.title}
-                            </button>);
-                        })}
-                    </div>
-                    <button onClick={() => {this.newItem()}}>Create New</button>
-                </div>}
-                {this.state.current != null && this.state.edit &&
-                    <div className="editor">
-                        <label htmlFor="title">Title:</label>
-                        <input type="text" name="title" value={this.state.title}
-                            onChange={(e) => {this.setState({title: e.currentTarget.value})}}>
-                        </input>
-                        <label htmlFor="body">Body:</label>
-                        <textarea type="text" name="body" value={this.state.body}
-                            onChange={(e) => {this.setState({body: e.currentTarget.value})}}>
-                        </textarea>
-                        <div>
-                            <button onClick={() => {this.saveItem()}}>Save</button>
-                            <button onClick={() => {this.setState({edit: false, current: null})}}>Cancel</button>
-                        </div>
-                    </div>
-                }
-                {this.state.current != null && !this.state.edit &&
-                    <div>
-                        <h1>{this.state.current.title}</h1>
-                        <div>{this.state.current.body}</div>
-                        <button onClick={() => {this.setState({
-                            edit: true,
-                            title: this.state.current.title,
-                            body: this.state.current.body
-                        })}}>Edit</button>
-                        <button onClick={() => {this.setState({current: null})}}>Back</button>
-                        <button onClick={() => {this.deleteCurrent()}}>Delete</button>
-                    </div>
-                }
+                {this.state.current == null && this.listView()}
+                {this.state.current != null && this.state.edit && this.editor()}
+                {this.state.current != null && !this.state.edit && this.viewer()}
             </div>
         );
     }
