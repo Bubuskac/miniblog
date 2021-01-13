@@ -3,7 +3,11 @@ import { PureComponent } from 'react';
 import config from './api/server.json';
 
 export default class App extends PureComponent {
-  
+    headers = {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+    };
+
     constructor() {
         super();
         this.state = {
@@ -22,10 +26,7 @@ export default class App extends PureComponent {
     async getList() {
         let response = await fetch(`http://${config.host}:${config.port}/list`, {
             method: 'GET',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
+            headers: this.headers
         });
         let json = await response.json();
         this.setState({
@@ -60,19 +61,13 @@ export default class App extends PureComponent {
         if (current.id < 0) {
             await fetch(`http://${config.host}:${config.port}/item`, {
                 method: 'PUT',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
+                headers: this.headers,
                 body: JSON.stringify(current)
             });
         } else {
             await fetch(`http://${config.host}:${config.port}/item?id=${current.id}`, {
                 method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
+                headers: this.headers,
                 body: JSON.stringify(current)
             });
         }
@@ -83,10 +78,7 @@ export default class App extends PureComponent {
         let current = this.state.current;
         await fetch(`http://${config.host}:${config.port}/item?id=${current.id}`, {
             method: 'DELETE',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
+            headers: this.headers
         });
         this.getList();
     }
